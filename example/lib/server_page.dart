@@ -59,6 +59,8 @@ class _ServerPageState extends State<ServerPage> {
         Container(
           padding: EdgeInsets.all(16),
           child: ListView(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
             children: [
               Row(
                 children: [
@@ -114,6 +116,7 @@ class _ServerPageState extends State<ServerPage> {
               ),
               ListView.builder(
                 shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 itemCount: widget.connectedClientNodes.length,
                 itemBuilder: (context, index) {
                   return _buildClientListItem(
@@ -127,8 +130,6 @@ class _ServerPageState extends State<ServerPage> {
               SizedBox(height: 12),
               Divider(),
               SizedBox(height: 12),
-              Text(
-                  'Data Received: ${widget.dataReceived.isEmpty ? '-' : widget.dataReceived}'),
             ],
           ),
         ),

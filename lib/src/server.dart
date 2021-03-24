@@ -143,6 +143,8 @@ abstract class _BaseServerNode with _BaseNode {
           print('Received connection request from Client $data}');
         }
 
+        _handleConnect(data);
+
         if (data.title == _s.checkServerExist) {
           final payloadToSend = DataPacket(
                   host: host, port: port, name: name, title: _s.imAlreadyServer)

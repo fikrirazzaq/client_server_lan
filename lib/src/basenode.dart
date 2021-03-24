@@ -192,7 +192,11 @@ abstract class _BaseNode {
             break;
           default:
             //packet recieved
-            _.data('Recieved Packet: ${data.name} : ${data.payload}');
+            if (data.payload is Map<String, Object>) {
+              _.data('Recieved Packet: ${data.name} : ${data.payload['type']}');
+            } else {
+              _.data('Recieved Packet: ${data.name} : ${data.payload}');
+            }
             _dataResponce.sink.add(data);
             break;
         }
@@ -231,7 +235,12 @@ abstract class _BaseNode {
     if (_s.titles.contains(title)) throw _e.titleInternal;
 
     if (verbose) {
-      _.smallArrowOut('Sending data $data to $to');
+      try {
+        var parsedData = json.decode(data);
+        _.smallArrowOut('Sending data ${parsedData['type']} to $to');
+      } catch (e) {
+        _.smallArrowOut('Sending data $data to $to');
+      }
     }
     final response = await _sendData(title, data, to, _suffix);
     if (response == null || response.statusCode != HttpStatus.ok) {
@@ -330,7 +339,12 @@ abstract class _BaseNode {
     if (_isServer) {
       // The server recieves the packet
       if (verbose) {
-        _.smallArrowOut('Sending data $data to ${data.to}');
+        if (data.payload is Map<String, Object>) {
+          _.smallArrowOut(
+              'Sending data ${data.title}-${data.payload['type']} to ${data.to}');
+        } else {
+          _.smallArrowOut('Sending data $data to ${data.to}');
+        }
       }
       //send the data
       final uri = 'http://${data.to}$_suffix';
@@ -354,7 +368,11 @@ abstract class _BaseNode {
       }
     } else {
       // The client recieves the packet
-      _.data('Recieved Packet: ${data.name} : ${data.payload}');
+      if (data.payload is Map<String, Object>) {
+        _.data('Recieved Packet: ${data.name} : ${data.payload['type']}');
+      } else {
+        _.data('Recieved Packet: ${data.name} : ${data.payload}');
+      }
       _dataResponce.sink.add(data);
     }
   }

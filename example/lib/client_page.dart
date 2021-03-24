@@ -33,6 +33,8 @@ class ClientPage extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(16),
           child: ListView(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
             children: [
               Row(
                 children: [
@@ -126,8 +128,6 @@ class ClientPage extends StatelessWidget {
               SizedBox(height: 12),
               Divider(),
               SizedBox(height: 12),
-              Text(
-                  'Data Received: ${dataReceived.isEmpty ? '-' : dataReceived}'),
             ],
           ),
         ),
